@@ -9,9 +9,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
 <style>
-:root{--bg:#f5f6f7;--sf:#fff;--tx:#1b1f24;--mu:#6b7280;--ln:#e3e6ea;--ac:#3b5b8c;--ac2:#e8eef7;--ok:#2f7d4f;--bad:#b3402f;--warn:#9a6b12;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181c;--sf:#1e2227;--tx:#e8eaed;--mu:#98a0ab;--ln:#2d333a;--ac:#8fb0e3;--ac2:#243044;--ok:#6cc58f;--bad:#e5836f;--warn:#dcb25c;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#15181c;--sf:#1e2227;--tx:#e8eaed;--mu:#98a0ab;--ln:#2d333a;--ac:#8fb0e3;--ac2:#243044;--ok:#6cc58f;--bad:#e5836f;--warn:#dcb25c;color-scheme:dark}
+:root{--bg:#f5f6f7;--sf:#fff;--tx:#1b1f24;--mu:#6b7280;--ln:#e3e6ea;--ac:#3b5b8c;--ac2:#e8eef7;--ok:#2f7d4f;--bad:#b3402f;--warn:#9a6b12;--org:#c2610f;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181c;--sf:#1e2227;--tx:#e8eaed;--mu:#98a0ab;--ln:#2d333a;--ac:#8fb0e3;--ac2:#243044;--ok:#6cc58f;--bad:#e5836f;--warn:#dcb25c;--org:#f0a45a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15181c;--sf:#1e2227;--tx:#e8eaed;--mu:#98a0ab;--ln:#2d333a;--ac:#8fb0e3;--ac2:#243044;--ok:#6cc58f;--bad:#e5836f;--warn:#dcb25c;--org:#f0a45a;color-scheme:dark}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-variant-numeric:tabular-nums;padding-bottom:76px}
@@ -58,6 +58,28 @@ nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;st
 .tc{background:var(--sf);border:1px solid var(--ln);border-radius:14px;max-width:420px;width:100%;padding:20px;margin-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
 .tc h2{font-size:19px;margin:10px 0 6px;font-weight:800}.tc p{margin:0;color:var(--mu)}
 .dots{display:flex;gap:6px;margin:14px 0}.dots i{width:7px;height:7px;border-radius:99px;background:var(--ln)}.dots i.on{background:var(--ac);width:18px}
+
+button{transition:transform .12s,background .2s,border-color .2s}button:active{transform:scale(.96)}
+.enter{animation:rise .35s cubic-bezier(.2,.7,.2,1)}
+.bar i{transform-origin:left;animation:grow .8s cubic-bezier(.2,.7,.2,1) both}
+.ch .ln{stroke-dasharray:1;animation:draw 1s ease-out both}.ch circle{animation:fade .5s .7s both}
+.ch rect{transform-box:fill-box;transform-origin:bottom;animation:up .7s cubic-bezier(.2,.7,.2,1) both}
+.ov{animation:fade .2s}.tc{animation:pop .3s cubic-bezier(.2,.7,.2,1)}
+nav button.on svg{animation:bump .35s}
+.alert{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--c);background:color-mix(in srgb,var(--c) 11%,var(--sf));border-radius:10px;padding:12px;margin-bottom:12px}
+.alert .dot{width:10px;height:10px;border-radius:99px;background:var(--c);margin-top:5px;flex:none}
+.alert b{display:block;color:var(--c)}.alert span{font-size:13.5px}
+.alert[style*="--bad"] .dot{animation:pulse 1.6s infinite}
+.sr{margin-top:4px;border:1px solid var(--ln);border-radius:8px;overflow:hidden}.sr:empty{display:none}.sr .empty{padding:8px 10px;margin:0}
+.sri{display:flex;justify-content:space-between;gap:8px;width:100%;border:0;border-top:1px solid var(--ln);border-radius:0;text-align:left;background:var(--sf)}.sri:first-child{border-top:0}
+.sw{display:flex;gap:10px;margin-bottom:6px}.sw button{width:38px;height:38px;border-radius:99px;padding:0;border:3px solid var(--sf);box-shadow:0 0 0 1px var(--ln)}.sw button.on{box-shadow:0 0 0 2px var(--tx)}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}}@keyframes fade{from{opacity:0}}
+@keyframes pop{from{opacity:0;transform:translateY(16px) scale(.97)}}@keyframes grow{from{transform:scaleX(0)}}
+@keyframes draw{from{stroke-dashoffset:1}}@keyframes up{from{transform:scaleY(0)}}
+@keyframes bump{50%{transform:translateY(-3px) scale(1.12)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(179,64,47,.55)}70%,100%{box-shadow:0 0 0 8px rgba(179,64,47,0)}}
+body.noanim *,body.noanim *::before{animation:none!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
@@ -68,6 +90,7 @@ var SEED=[["Chicken breast, cooked",165,31,0,3.6],["Egg, whole",143,12.6,.7,9.5]
 var K="baseline1",S=null;
 try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
 if(!S||!S.p){S={p:{sex:"m",age:25,h:175,act:1.55,goal:"maintain",rate:.5,ppk:1.8},w:[],l:[],foods:SEED.map(function(x,i){return{id:"s"+i,n:x[0],k:x[1],p:x[2],c:x[3],f:x[4]}}),log:[]}}
+S.st=Object.assign({bu:'kg',lu:'kg',theme:'auto',ac:'blue',anim:1,warn:1},S.st||{});S.eu=S.eu||{};
 function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
 var tab="weight",wr="day",nd=null,editF=null,fq="";
 function $(i){return document.getElementById(i)}
@@ -81,9 +104,15 @@ function r1(n){return (Math.round(n*10)/10).toString()}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
 function avg(a){return a.reduce(function(x,y){return x+y},0)/a.length}
 function num(id){return parseFloat($(id).value)}
-var IC={weight:"M4 5h16v14H4z M8 10a4 4 0 018 0",lifts:"M3 9v6M7 6v12M17 6v12M21 9v6M7 12h10",food:"M3 11h18a9 9 0 01-18 0z M9 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4",db:"M5 6h14M5 12h14M5 18h14",me:"M12 12a4 4 0 100-8 4 4 0 000 8z M4 21a8 8 0 0116 0"};
-var TABS=[["weight","Weight"],["lifts","Strength"],["food","Intake"],["db","Foods"],["me","Profile"]];
-function go(t){tab=t;render();window.scrollTo(0,0)}
+var LB=2.20462,EX=[],selF=null;
+function bu(){return S.st.bu}
+function bv(kg){return bu()==="lb"?kg*LB:kg}
+function bs(kg){return r1(bv(kg))+" "+bu()}
+function lu(ex){return S.eu[ex]||S.st.lu}
+function lv(kg,u){return u==="lb"?kg*LB:kg}
+var IC={weight:"M4 5h16v14H4z M8 10a4 4 0 018 0",lifts:"M3 9v6M7 6v12M17 6v12M21 9v6M7 12h10",food:"M3 11h18a9 9 0 01-18 0z M9 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4",db:"M5 6h14M5 12h14M5 18h14",me:"M12 12a4 4 0 100-8 4 4 0 000 8z M4 21a8 8 0 0116 0",set:"M12 15a3 3 0 100-6 3 3 0 000 6z M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6L7 7M17 17l1.4 1.4M5.6 18.4L7 17M17 7l1.4-1.4"};
+var TABS=[["weight","Weight"],["lifts","Strength"],["food","Intake"],["db","Foods"],["me","Profile"],["set","Settings"]];
+function go(t){tab=t;render();var v=$("v");void v.offsetWidth;v.className="enter";window.scrollTo(0,0)}
 
 /* targets */
 function latestW(){if(!S.w.length)return null;return S.w.slice().sort(function(a,b){return a.d<b.d?-1:1}).pop().kg}
@@ -100,9 +129,9 @@ function X(i){return l+i*(W-l-r)/(n-1)}function Y(v){return t+(mx-v)*(H-t-b)/(mx
 function path(a){return a.map(function(v,i){return(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)}).join("")}
 var s='<svg class="ch" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Trend chart">';
 for(var g=0;g<3;g++){var v=mn+(mx-mn)*g/2,y=Y(v);s+='<line class="g" x1="'+l+'" x2="'+(W-r)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(l-4)+'" y="'+(y+3)+'" text-anchor="end">'+r1(v)+'</text>'}
-s+='<path d="'+path(raw)+'" fill="none" stroke="var(--mu)" stroke-width="1.2" opacity=".7"/>';
+s+='<path class="ln" pathLength="1" d="'+path(raw)+'" fill="none" stroke="var(--mu)" stroke-width="1.2" opacity=".7"/>';
 if(n<=40)raw.forEach(function(v,i){s+='<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="2.4" fill="var(--mu)"/>'});
-if(tr)s+='<path d="'+path(tr)+'" fill="none" stroke="var(--ac)" stroke-width="2.4" stroke-linejoin="round"/>';
+if(tr)s+='<path class="ln" pathLength="1" d="'+path(tr)+'" fill="none" stroke="var(--ac)" stroke-width="2.4" stroke-linejoin="round"/>';
 s+='<text x="'+l+'" y="'+(H-6)+'">'+labs[0]+'</text><text x="'+(W-r)+'" y="'+(H-6)+'" text-anchor="end">'+labs[n-1]+'</text></svg>';
 return s}
 
@@ -114,19 +143,19 @@ tr=raw.map(function(_,i){return avg(raw.slice(Math.max(0,i-6),i+1))});lb=a.map(f
 else{var m={},o=[];a.forEach(function(x){var k;if(wr==="week"){var d=pd(x.d);d.setDate(d.getDate()-(d.getDay()+6)%7);k=ymd(d)}else k=x.d.slice(0,7);if(!m[k]){m[k]=[];o.push(k)}m[k].push(x.kg)});
 o=o.slice(-12);raw=o.map(function(k){return avg(m[k])});tr=null;
 lb=o.map(function(k){return wr==="week"?lab(k):pd(k+"-01").toLocaleDateString(undefined,{month:"short",year:"2-digit"})})}
-return{raw:raw,tr:tr,lb:lb}}
+return{raw:raw.map(bv),tr:tr&&tr.map(bv),lb:lb}}
 function vWeight(){
 var s=wSeries(),all=S.w.slice().sort(function(x,y){return x.d<y.d?-1:1}),cur=all.length?all[all.length-1].kg:null;
 var last7=all.filter(function(x){return x.d>addD(td(),-7)}).map(function(x){return x.kg}),prev7=all.filter(function(x){return x.d<=addD(td(),-7)&&x.d>addD(td(),-14)}).map(function(x){return x.kg});
 var wk=last7.length&&prev7.length?avg(last7)-avg(prev7):null,rc=s.raw.length>1?s.raw[s.raw.length-1]-s.raw[0]:null;
 function sg(v){return(v>0?"+":"")+r1(v)}
-var h='<div class="stats"><div class="stat"><span>Current</span><b>'+(cur?r1(cur)+" kg":"--")+'</b></div><div class="stat"><span>7-day average</span><b>'+(last7.length?r1(avg(last7)):"--")+'</b></div><div class="stat"><span>Vs prior week</span><b>'+(wk===null?"--":sg(wk)+" kg")+'</b></div></div>';
+var h='<div class="stats"><div class="stat"><span>Current</span><b>'+(cur?bs(cur):"--")+'</b></div><div class="stat"><span>7-day average</span><b>'+(last7.length?r1(bv(avg(last7))):"--")+'</b></div><div class="stat"><span>Vs prior week</span><b>'+(wk===null?"--":sg(bv(wk))+" "+bu())+'</b></div></div>';
 h+='<div class="card"><div class="seg">'+["day","week","month"].map(function(k){return'<button class="'+(wr===k?"on":"")+'" onclick="wr=\''+k+'\';render()">'+k[0].toUpperCase()+k.slice(1)+'</button>'}).join("")+'</div>'+chart(s.raw,s.tr,s.lb)+
-'<p class="mu" style="margin:6px 0 0">'+(wr==="day"?"Dots are daily weigh-ins; the line is the 7-entry moving average.":"Each point is the "+wr+"ly average.")+(rc===null?"":" Change across range: "+sg(rc)+" kg.")+'</p></div>';
-h+=wStats(all);h+='<div class="card"><h2>Log weight</h2><div class="row"><div class="f"><label for="wd">Date</label><input id="wd" type="date" value="'+td()+'"></div><div class="f"><label for="wk">Weight (kg)</label><input id="wk" type="number" inputmode="decimal" step="any"></div></div><button class="p" style="width:100%" onclick="addW()">Save weight</button></div>';
-h+='<div class="card"><h2>Recent entries</h2>'+(all.length?all.slice(-6).reverse().map(function(x){return'<div class="li"><div>'+lab(x.d)+'</div><div><b>'+r1(x.kg)+' kg</b><button class="x" aria-label="Delete entry" onclick="delW(\''+x.d+'\')">Remove</button></div></div>'}).join(""):'<p class="empty">No weigh-ins yet. Log your first one above.</p>')+'</div>';
+'<p class="mu" style="margin:6px 0 0">'+(wr==="day"?"Dots are daily weigh-ins; the line is the 7-entry moving average.":"Each point is the "+wr+"ly average.")+(rc===null?"":" Change across range: "+sg(rc)+" "+bu()+".")+'</p></div>';
+h+=wkCard();h+=wStats(all);h+='<div class="card"><h2>Log weight</h2><div class="row"><div class="f"><label for="wd">Date</label><input id="wd" type="date" value="'+td()+'"></div><div class="f"><label for="wk">Weight ('+bu()+')</label><input id="wk" type="number" inputmode="decimal" step="any"></div></div><button class="p" style="width:100%" onclick="addW()">Save weight</button></div>';
+h+='<div class="card"><h2>Recent entries</h2>'+(all.length?all.slice(-6).reverse().map(function(x){return'<div class="li"><div>'+lab(x.d)+'</div><div><b>'+bs(x.kg)+'</b><button class="x" aria-label="Delete entry" onclick="delW(\''+x.d+'\')">Remove</button></div></div>'}).join(""):'<p class="empty">No weigh-ins yet. Log your first one above.</p>')+'</div>';
 return h}
-function addW(){var d=$("wd").value,k=num("wk");if(!d||!(k>20&&k<400)){alert("Enter a date and a weight between 20 and 400 kg.");return}
+function addW(){var d=$("wd").value,k=num("wk")/(bu()==="lb"?LB:1);if(!d||!(k>20&&k<400)){alert("Enter a date and a weight between 20 and 400 kg.");return}
 S.w=S.w.filter(function(x){return x.d!==d});S.w.push({d:d,kg:k});save();render()}
 function delW(d){S.w=S.w.filter(function(x){return x.d!==d});save();render()}
 
@@ -139,24 +168,40 @@ var n=ss.length,k=Math.min(3,Math.ceil(n/2)),rec=avg(ss.slice(n-k).map(function(
 if(p>=1.5)return{t:"Getting stronger",c:"up",pct:p};if(p<=-1.5)return{t:"Losing strength",c:"dn",pct:p};return{t:"Holding steady",c:"fl",pct:p}}
 function vLifts(){
 var exs=[];S.l.forEach(function(x){if(exs.indexOf(x.ex)<0)exs.push(x.ex)});
-var h='<div class="card"><h2>Log a set</h2><div class="f"><label for="le">Exercise</label><input id="le" list="exl" placeholder="e.g. Bench press"><datalist id="exl">'+exs.map(function(e){return'<option value="'+esc(e)+'">'}).join("")+'</datalist></div><div class="row"><div class="f"><label for="lk">Weight (kg)</label><input id="lk" type="number" inputmode="decimal" step="any"></div><div class="f"><label for="lr">Reps</label><input id="lr" type="number" inputmode="numeric"></div></div><div class="f"><label for="ld">Date</label><input id="ld" type="date" value="'+td()+'"></div><button class="p" style="width:100%" onclick="addL()">Save set</button></div>';
+var h='<div class="card"><h2>Log a set</h2><div class="f"><label for="le">Exercise</label><input id="le" list="exl" placeholder="e.g. Bench press" oninput="exu()"><datalist id="exl">'+exs.map(function(e){return'<option value="'+esc(e)+'">'}).join("")+'</datalist></div><div class="row"><div class="f"><label for="lk">Weight</label><input id="lk" type="number" inputmode="decimal" step="any"></div><div class="f" style="flex:0 0 84px"><label for="lu">Unit</label><select id="lu">'+opt("kg",S.st.lu,"kg")+opt("lb",S.st.lu,"lb")+'</select></div><div class="f"><label for="lr">Reps</label><input id="lr" type="number" inputmode="numeric"></div></div><div class="f"><label for="ld">Date</label><input id="ld" type="date" value="'+td()+'"></div><button class="p" style="width:100%" onclick="addL()">Save set</button></div>';
 if(!exs.length)return h+'<p class="empty">Log sets for each lift. Progress is judged on estimated one-rep max across sessions.</p>';
-var ups=0,dns=0,wt=wDelta14();
-exs.forEach(function(ex){var ss=sessions(ex),st=status(ss);if(st.c==="up")ups++;if(st.c==="dn")dns++;
-h+='<div class="card"><div class="li" style="border:0;padding-top:0"><div><h2 style="margin:0">'+esc(ex)+'</h2><span class="mu">Est. 1RM '+r1(ss[ss.length-1].e)+' kg, '+ss.length+' session'+(ss.length>1?"s":"")+'</span></div><div><span class="badge '+st.c+'">'+st.t+(st.pct!==null?" "+(st.pct>0?"+":"")+r1(st.pct)+"%":"")+'</span></div></div>'+chart(ss.map(function(x){return x.e}),null,ss.map(function(x){return lab(x.d)}))+lstat(ex,ss)+'</div>'});
+EX=exs;var ups=0,dns=0,wt=wDelta14();
+exs.forEach(function(ex){var ss=sessions(ex),st=status(ss),u=lu(ex);if(st.c==="up")ups++;if(st.c==="dn")dns++;
+h+='<div class="card"><div class="li" style="border:0;padding-top:0"><div><h2 style="margin:0">'+esc(ex)+'</h2><span class="mu">Est. 1RM '+r1(lv(ss[ss.length-1].e,u))+' '+u+', '+ss.length+' session'+(ss.length>1?"s":"")+'</span></div><div><span class="badge '+st.c+'">'+st.t+(st.pct!==null?" "+(st.pct>0?"+":"")+r1(st.pct)+"%":"")+'</span><br><button class="x" onclick="togU('+exs.indexOf(ex)+')">Show in '+(u==="kg"?"lb":"kg")+'</button></div></div>'+chart(ss.map(function(x){return lv(x.e,u)}),null,ss.map(function(x){return lab(x.d)}))+lstat(ex,ss,u)+'</div>'});
 var sum=dns&&wt!==null&&wt<-.5?"Strength is falling while bodyweight drops. Check protein, calories and recovery to protect muscle.":dns?"Some lifts are trending down. Check sleep, volume and recovery.":ups?"Overall strength is trending up.":"Strength is holding. Add reps or load to progress.";
 return h.replace('<div class="card"><h2>Log a set</h2>','<div class="card"><h2>Overall</h2><p style="margin:0">'+sum+'</p></div><div class="card"><h2>Log a set</h2>')}
+function exu(){var e=$("le").value.trim();if(S.eu[e])$("lu").value=S.eu[e]}
+function togU(i){var e=EX[i];S.eu[e]=lu(e)==="kg"?"lb":"kg";save();render()}
 function wDelta14(){var a=S.w.filter(function(x){return x.d>addD(td(),-14)}).sort(function(x,y){return x.d<y.d?-1:1});return a.length>1?a[a.length-1].kg-a[0].kg:null}
-function addL(){var ex=$("le").value.trim(),k=num("lk"),r=num("lr"),d=$("ld").value;if(!ex||!(k>=0)||!(r>0)||!d){alert("Enter exercise, weight, reps and date.");return}
-S.l.push({d:d,ex:ex,kg:k,reps:r});save();render()}
+function addL(){var ex=$("le").value.trim(),u=$("lu").value,k=num("lk")/(u==="lb"?LB:1),r=num("lr"),d=$("ld").value;if(!ex||!(k>=0)||!(r>0)||!d){alert("Enter exercise, weight, reps and date.");return}
+S.eu[ex]=u;S.l.push({d:d,ex:ex,kg:k,reps:r});save();render()}
 
 /* extras */
 IC.logo="M12 20.5s-8-5-8-10.8A4.6 4.6 0 0112 7a4.6 4.6 0 018 2.7c0 5.8-8 10.8-8 10.8z M4 12h4l2-3.5 3 6.5 2-3h5";
-var TU=[["Welcome to Baseline","Track bodyweight, strength and nutrition in one place. This tour takes under a minute.","logo"],["Set up your profile","Enter age, height, activity and goal in Profile. Baseline then calculates your maintenance calories and daily protein target.","me"],["Log your weight","Weigh in at the same time each day. The moving average smooths daily swings so you can see the real trend. Switch between day, week and month views.","weight"],["Record your lifts","Log each set. Baseline estimates your one-rep max and shows whether you are getting stronger, holding steady or losing strength.","lifts"],["Track your intake","Pick foods and enter grams. See calories against your target, your deficit or surplus, protein progress and a 7-day chart.","food"],["Make it yours","Add or edit foods in the Foods tab. All data stays on your device. You can replay this tour from Profile.","db"]];
+var TU=[["Welcome to Baseline","Track bodyweight, strength and nutrition in one place. This tour takes under a minute.","logo"],["Set up your profile","Enter age, height, activity and goal in Profile. Baseline then calculates your maintenance calories and daily protein target.","me"],["Log your weight","Weigh in at the same time each day. The moving average smooths daily swings so you can see the real trend. Switch between day, week and month views.","weight"],["Record your lifts","Log each set. Baseline estimates your one-rep max and shows whether you are getting stronger, holding steady or losing strength.","lifts"],["Track your intake","Pick foods and enter grams. See calories against your target, your deficit or surplus, protein progress and a 7-day chart.","food"],["Make it yours","Add or edit foods in the Foods tab. All data stays on your device. Units, theme and warnings live in Settings, where you can also replay this tour.","db"]];
 function tut(i){var o=$("tu");if(i>=TU.length){if(o)o.remove();S.seen=1;save();go(S.w.length?tab:"me");return}
 if(!o){o=document.createElement("div");o.id="tu";o.className="ov";document.body.appendChild(o)}
 if(i>0){tab=TU[i][2];render()}
 var last=i===TU.length-1;o.innerHTML='<div class="tc" role="dialog" aria-modal="true" aria-label="Tutorial"><svg class="ti" viewBox="0 0 24 24"><path d="'+IC[TU[i][2]]+'"/></svg><h2>'+TU[i][0]+'</h2><p>'+TU[i][1]+'</p><div class="dots">'+TU.map(function(_,j){return'<i class="'+(j===i?"on":"")+'"></i>'}).join("")+'</div><div class="row"><button onclick="tut(TU.length)">'+(last?"Close":"Skip")+'</button><button class="p" onclick="tut('+(i+1)+')">'+(last?"Get started":"Next")+'</button></div></div>'}
+function wkInfo(){var a=S.w.filter(function(x){return x.d>addD(td(),-14)}).sort(function(x,y){return x.d<y.d?-1:1});if(a.length<2)return null;
+var f=a[0],z=a[a.length-1],dd=(pd(z.d)-pd(f.d))/864e5;if(dd<3)return null;var ch=(z.kg-f.kg)/dd*7;return{ch:ch,pct:ch/z.kg*100}}
+function al(c,ti,m){return'<div class="alert" role="status" style="--c:var(--'+c+')"><i class="dot"></i><div><b>'+ti+'</b><span>'+m+'</span></div></div>'}
+function wkCard(){if(!S.st.warn)return"";var i=wkInfo(),g=S.p.goal,t=T(),h="",r;
+if(!i)h=al("mu","Weekly check","Log two or more weigh-ins over at least 3 days to see how your weekly trend fits your goal.");
+else{var p=i.pct,d=(i.ch>0?"+":"")+r1(bv(i.ch))+" "+bu()+" a week ("+(p>0?"+":"")+r1(p)+"%)";
+if(p<=-1)r=al("bad","Losing weight too fast","Your trend is "+d+". Over 1% of bodyweight a week is unhealthy and can cost muscle. Eat more or ease the deficit.");
+else if(g==="lose")r=p>-.1?al("org","Not losing yet","Your trend is "+d+". Tighten intake a little or give it another week."):al("ok","On track for fat loss","Your trend is "+d+". A steady, healthy pace.");
+else if(g==="gain")r=p>.5?al("org","Gaining too fast","Your trend is "+d+". Past 0.5% a week, more of the gain is fat. Trim the surplus a little."):p>=.1?al("ok","On track for gaining","Your trend is "+d+". A lean, steady pace."):al("org","Not gaining yet","Your trend is "+d+". Add some calories to start gaining.");
+else r=Math.abs(p)<=.3?al("ok","Maintaining well","Your trend is "+d+". Weight is stable."):al("org",p>0?"Weight is creeping up":"Weight is drifting down","Your trend is "+d+" and your goal is to maintain.");
+h=r}
+var ks=[];for(var j=0;j<7;j++){var k=dayTot(addD(td(),-j)).k;if(k>0)ks.push(k)}
+if(t&&ks.length>=3&&avg(ks)<t.bmr)h+=al("bad","Eating below your resting energy","Your logged average is "+Math.round(avg(ks))+" kcal over "+ks.length+" days, under your BMR of "+Math.round(t.bmr)+" kcal. Staying this low is unhealthy.");
+return h}
 function dayTot(d){var o={k:0,p:0,c:0,f:0};S.log.forEach(function(x){if(x.d!==d)return;var f=foodOf(x.fid);if(!f)return;var m=x.g/100;o.k+=f.k*m;o.p+=f.p*m;o.c+=f.c*m;o.f+=f.f*m});return o}
 function bars(v,lb,tg){var W=320,H=150,l=34,r=8,t=10,b=22,n=v.length,mx=Math.max.apply(0,v.concat([tg||0,1]))*1.15,bw=(W-l-r)/n;function Y(a){return t+(mx-a)*(H-t-b)/mx}
 var s='<svg class="ch" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily calories, last 7 days">';
@@ -171,14 +216,14 @@ return'<div class="card"><h2>Last 7 days</h2>'+bars(k,lb,t&&t.target)+'<p class=
 (mk?'<h2 style="margin:16px 0 6px">Macro split for this day</h2><div style="display:flex;height:10px;border-radius:99px;overflow:hidden"><i style="width:'+pc+'%;background:var(--ac)"></i><i style="width:'+cc+'%;background:var(--ok)"></i><i style="width:'+fc+'%;background:var(--warn)"></i></div><p class="mu" style="margin:6px 0 0">Protein '+pc+'%, carbs '+cc+'%, fat '+fc+'%</p>':'')+'</div>'}
 function wStats(a){if(a.length<2)return"";var v=a.map(function(x){return x.kg}),f=a[0],z=a[a.length-1],days=Math.max(1,(pd(z.d)-pd(f.d))/864e5),pw=(z.kg-f.kg)/days*7,m=a.filter(function(x){return x.d>addD(td(),-30)}),c30=m.length>1?m[m.length-1].kg-m[0].kg:null,bmi=z.kg/Math.pow(S.p.h/100,2);
 function sg(x){return(x>0?"+":"")+r1(x)}function c(p,q){return'<div class="stat"><span>'+p+'</span><b>'+q+'</b></div>'}
-return'<div class="stats" style="grid-template-columns:repeat(2,1fr)">'+c("Lowest",r1(Math.min.apply(0,v))+" kg")+c("Highest",r1(Math.max.apply(0,v))+" kg")+c("Avg weekly change",sg(pw)+" kg")+c("Last 30 days",c30===null?"--":sg(c30)+" kg")+c("Total change",sg(z.kg-f.kg)+" kg")+c("BMI",r1(bmi))+'</div>'}
-function lstat(ex,ss){var L=S.l.filter(function(x){return x.ex===ex}),hv=L.reduce(function(m,x){return x.kg>m.kg?x:m},L[0]),pr=Math.max.apply(0,ss.map(function(x){return x.e})),vol=L.filter(function(x){return x.d>addD(td(),-7)}).reduce(function(s,x){return s+x.kg*x.reps},0);
+return'<div class="stats" style="grid-template-columns:repeat(2,1fr)">'+c("Lowest",bs(Math.min.apply(0,v)))+c("Highest",bs(Math.max.apply(0,v)))+c("Avg weekly change",sg(bv(pw))+" "+bu())+c("Last 30 days",c30===null?"--":sg(bv(c30))+" "+bu())+c("Total change",sg(bv(z.kg-f.kg))+" "+bu())+c("BMI",r1(bmi))+'</div>'}
+function lstat(ex,ss,u){var L=S.l.filter(function(x){return x.ex===ex}),hv=L.reduce(function(m,x){return x.kg>m.kg?x:m},L[0]),pr=Math.max.apply(0,ss.map(function(x){return x.e})),vol=L.filter(function(x){return x.d>addD(td(),-7)}).reduce(function(s,x){return s+x.kg*x.reps},0);
 function c(p,q){return'<div><b>'+q+'</b><br><span class="mu">'+p+'</span></div>'}
-return'<div class="grid3" style="margin-top:10px">'+c("Best est. 1RM",r1(pr)+" kg")+c("Heaviest set",hv.kg+" x "+hv.reps)+c("7-day volume",Math.round(vol)+" kg")+'</div>'}
+return'<div class="grid3" style="margin-top:10px">'+c("Best est. 1RM",r1(lv(pr,u))+" "+u)+c("Heaviest set",r1(lv(hv.kg,u))+" x "+hv.reps)+c("7-day volume",Math.round(lv(vol,u))+" "+u)+'</div>'}
 
 /* intake */
 function foodOf(id){return S.foods.filter(function(f){return f.id===id})[0]}
-function vFood(){nd=nd||td();var t=T(),items=S.log.filter(function(x){return x.d===nd}),tot={k:0,p:0,c:0,f:0};
+function vFood(){nd=nd||td();selF=null;var t=T(),items=S.log.filter(function(x){return x.d===nd}),tot={k:0,p:0,c:0,f:0};
 items.forEach(function(x){var f=foodOf(x.fid);if(!f)return;var m=x.g/100;tot.k+=f.k*m;tot.p+=f.p*m;tot.c+=f.c*m;tot.f+=f.f*m});
 var h='<div class="row" style="margin-bottom:12px"><button onclick="nd=addD(nd,-1);render()">Previous</button><div style="text-align:center;font-weight:600">'+(nd===td()?"Today":lab(nd))+'</div><button onclick="nd=addD(nd,1);render()">Next</button></div>';
 if(!t)h+='<div class="card"><div class="big">'+Math.round(tot.k)+' kcal</div><p style="margin:4px 0 0">'+Math.round(tot.p)+' g protein, '+Math.round(tot.c)+' g carbs, '+Math.round(tot.f)+' g fat today. Log your bodyweight in the Weight tab to see targets and your deficit or surplus.</p></div>';
@@ -187,15 +232,19 @@ h+='<div class="card"><div class="row"><div><span class="mu">Calories</span><div
 '<div class="bar"><i class="'+(tot.k>t.target?"over":"")+'" style="width:'+Math.min(100,tot.k/t.target*100)+'%"></i></div><div class="bar"><i style="width:'+Math.min(100,tot.p/t.prot*100)+'%"></i></div>'+
 '<div class="grid3"><div><b>'+Math.round(tot.c)+' g</b><br><span class="mu">Carbs</span></div><div><b>'+Math.round(tot.f)+' g</b><br><span class="mu">Fat</span></div><div><b>'+Math.max(0,Math.round(t.target-tot.k))+'</b><br><span class="mu">kcal left</span></div></div>'+
 '<p style="margin:12px 0 0"><span class="badge">'+bt+'</span> <span class="mu">vs maintenance of '+Math.round(t.tdee)+' kcal</span></p></div>'}
-h+=week7(t,tot);h+='<div class="card"><h2>Add food</h2><div class="f"><label for="ff">Food</label><select id="ff" onchange="pick()"><option value="">Choose a food</option>'+S.foods.slice().sort(function(a,b){return a.n<b.n?-1:1}).map(function(f){return'<option value="'+f.id+'">'+esc(f.n)+'</option>'}).join("")+'</select></div><div class="row"><div class="f"><label for="fg">Amount (g)</label><input id="fg" type="number" inputmode="decimal" value="100" oninput="prev()"></div><div class="f"><label for="fn">Servings</label><input id="fn" type="number" inputmode="decimal" step="any" value="1" oninput="srv()"></div></div><p class="mu" id="sv" style="margin:0 0 8px"></p><button class="p" style="width:100%" onclick="addLog()">Add to log</button></div>';
+h+=wkCard();h+=week7(t,tot);h+='<div class="card"><h2>Add food</h2><div class="f"><label for="ff">Search food</label><input id="ff" type="search" autocomplete="off" placeholder="Type e.g. chicken" oninput="fsr()" onfocus="fsr()"><div id="fr" class="sr"></div></div><div class="row"><div class="f"><label for="fg">Amount (g)</label><input id="fg" type="number" inputmode="decimal" value="100" oninput="prev()"></div><div class="f"><label for="fn">Servings</label><input id="fn" type="number" inputmode="decimal" step="any" value="1" oninput="srv()"></div></div><p class="mu" id="sv" style="margin:0 0 8px"></p><button class="p" style="width:100%" onclick="addLog()">Add to log</button></div>';
 h+='<div class="card"><h2>Logged</h2>'+(items.length?items.map(function(x){var f=foodOf(x.fid);if(!f)return"";return'<div class="li"><div>'+esc(f.n)+'<br><span class="mu">'+x.g+' g, '+Math.round(f.p*x.g/100)+' g protein</span></div><div><b>'+Math.round(f.k*x.g/100)+' kcal</b><button class="x" aria-label="Remove" onclick="delLog(\''+x.id+'\')">Remove</button></div></div>'}).join(""):'<p class="empty">Nothing logged for this day.</p>')+'</div>';
 return h}
-function curF(){return foodOf($("ff").value)}
-function pick(){var f=curF();if(f){$("fn").value=1;$("fg").value=r1(f.s||100)}prev()}
+function curF(){return selF?foodOf(selF):null}
+function fsr(){var q=$("ff").value.trim().toLowerCase();if(selF&&(!foodOf(selF)||foodOf(selF).n!==$("ff").value))selF=null;
+if(selF){$("fr").innerHTML="";return}
+var a=S.foods.filter(function(f){return!q||f.n.toLowerCase().indexOf(q)>=0}).sort(function(a,b){return a.n<b.n?-1:1}).slice(0,8);
+$("fr").innerHTML=a.length?a.map(function(f){return'<button class="sri" onclick="pk(\''+f.id+'\')"><span>'+esc(f.n)+'</span><span class="mu">'+Math.round(f.k)+' kcal / 100 g</span></button>'}).join(""):'<p class="empty">No match. Add it in the Foods tab.</p>'}
+function pk(id){selF=id;var f=foodOf(id);$("ff").value=f.n;$("fr").innerHTML="";$("fn").value=1;$("fg").value=r1(f.s||100);prev()}
 function srv(){var f=curF();if(f&&num("fn")>0)$("fg").value=r1((f.s||100)*num("fn"));prev()}
 function prev(){var f=curF(),g=num("fg");$("sv").textContent=f&&g>0?"1 serving = "+r1(f.s||100)+" g. This entry: "+Math.round(f.k*g/100)+" kcal, "+r1(f.p*g/100)+" g protein, "+r1(f.c*g/100)+" g carbs, "+r1(f.f*g/100)+" g fat.":""}
 function addLog(){var g=num("fg"),f=curF();
-if(!f||!(g>0)){alert("Pick a food from your database and enter grams. Add new foods in the Foods tab.");return}
+if(!f||!(g>0)){alert("Search and tap a food first, then enter grams. Add new foods in the Foods tab.");return}
 S.log.push({id:uid(),d:nd,fid:f.id,g:g});save();render()}
 function delLog(id){S.log=S.log.filter(function(x){return x.id!==id});save();render()}
 
@@ -217,15 +266,28 @@ var h='<div class="card"><div class="row"><div class="f"><label for="ps">Sex</la
 '<div class="f"><label for="pc">Activity level</label><select id="pc" onchange="sp(\'act\',this.value)">'+opt(1.2,p.act,"Sedentary")+opt(1.375,p.act,"Light, 1 to 3 workouts a week")+opt(1.55,p.act,"Moderate, 3 to 5 workouts a week")+opt(1.725,p.act,"Heavy, 6 to 7 workouts a week")+opt(1.9,p.act,"Very heavy, physical job plus training")+'</select></div>'+
 '<div class="row"><div class="f"><label for="pg">Goal</label><select id="pg" onchange="sp(\'goal\',this.value)">'+opt("lose",p.goal,"Lose weight")+opt("maintain",p.goal,"Maintain")+opt("gain",p.goal,"Gain weight")+'</select></div><div class="f"><label for="pr">Rate (kg per week)</label><select id="pr" onchange="sp(\'rate\',this.value)">'+opt(.25,p.rate,"0.25")+opt(.5,p.rate,"0.5")+opt(.75,p.rate,"0.75")+opt(1,p.rate,"1.0")+'</select></div></div>'+
 '<div class="f"><label for="pp">Protein (g per kg bodyweight)</label><input id="pp" type="number" step="0.1" value="'+p.ppk+'" onchange="sp(\'ppk\',this.value)"></div></div>';
-h+=t?'<div class="card"><h2>Your numbers</h2><div class="li"><span>Weight used</span><b>'+r1(t.w)+' kg</b></div><div class="li"><span>Resting energy (BMR)</span><b>'+Math.round(t.bmr)+' kcal</b></div><div class="li"><span>Maintenance (TDEE)</span><b>'+Math.round(t.tdee)+' kcal</b></div><div class="li"><span>Daily calorie target</span><b>'+Math.round(t.target)+' kcal</b></div><div class="li"><span>Daily protein target</span><b>'+Math.round(t.prot)+' g</b></div><p class="mu" style="margin:8px 0 0">Mifflin-St Jeor estimate. Targets use your latest logged weight and 7,700 kcal per kg of change. Adjust based on real trend.</p></div>':'<div class="card"><p style="margin:0">Log a weight to see your calorie and protein targets.</p></div>';
-h+='<div class="card"><h2>Appearance</h2><div class="seg"><button onclick="theme(\'auto\')">Auto</button><button onclick="theme(\'light\')">Light</button><button onclick="theme(\'dark\')">Dark</button></div><p class="mu" style="margin:0">Data is stored on this device only.</p><button style="width:100%;margin-top:10px" onclick="tut(0)">Replay tutorial</button></div>';return h}
-function theme(m){var r=document.documentElement;if(m==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",m)}
+h+=t?'<div class="card"><h2>Your numbers</h2><div class="li"><span>Weight used</span><b>'+bs(t.w)+'</b></div><div class="li"><span>Resting energy (BMR)</span><b>'+Math.round(t.bmr)+' kcal</b></div><div class="li"><span>Maintenance (TDEE)</span><b>'+Math.round(t.tdee)+' kcal</b></div><div class="li"><span>Daily calorie target</span><b>'+Math.round(t.target)+' kcal</b></div><div class="li"><span>Daily protein target</span><b>'+Math.round(t.prot)+' g</b></div><p class="mu" style="margin:8px 0 0">Mifflin-St Jeor estimate. Targets use your latest logged weight and 7,700 kcal per kg of change. Adjust based on real trend.</p></div>':'<div class="card"><p style="margin:0">Log a weight to see your calorie and protein targets.</p></div>';
+return h}
+var AC={blue:["#3b5b8c","#e8eef7","#8fb0e3","#243044"],green:["#2f7d4f","#e6f3eb","#6cc58f","#1f3a2b"],purple:["#6b4fa0","#efe9f8","#b9a2e8","#2f2742"],orange:["#b5611a","#faeee2","#f0a45a","#3d2c1c"]};
+function apply(){var r=document.documentElement,t=S.st.theme;if(t==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",t);
+var dk=t==="dark"||(t==="auto"&&matchMedia("(prefers-color-scheme:dark)").matches),a=AC[S.st.ac]||AC.blue,i=dk?2:0;
+r.style.setProperty("--ac",a[i]);r.style.setProperty("--ac2",a[i+1]);document.body.classList.toggle("noanim",!S.st.anim)}
+try{matchMedia("(prefers-color-scheme:dark)").addEventListener("change",apply)}catch(e){}
+function sg2(k,o){return'<div class="seg">'+o.map(function(x){return'<button class="'+(String(S.st[k])===x[0]?"on":"")+'" onclick="sset(\''+k+'\',\''+x[0]+'\')">'+x[1]+'</button>'}).join("")+'</div>'}
+function sset(k,v){S.st[k]=(v==="0"||v==="1")?+v:v;save();apply();render()}
+function expo(){var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(S)],{type:"application/json"}));a.download="baseline-backup.json";a.click()}
+function rst(){if(confirm("Erase all weights, lifts, foods and logs on this device?")){try{localStorage.removeItem(K)}catch(e){}location.reload()}}
+function vSet(){var s=S.st,KL=[["kg","kg"],["lb","lb"]],OO=function(k){return sg2(k,[["1","On"],["0","Off"]])};
+return'<div class="card"><h2>Units</h2><label>Body weight</label>'+sg2("bu",KL)+'<label>Default for new exercises</label>'+sg2("lu",KL)+'<p class="mu" style="margin:0">Each exercise remembers its own unit. Switch it any time from its card in Strength.</p></div>'+
+'<div class="card"><h2>Appearance</h2><label>Theme</label>'+sg2("theme",[["auto","Auto"],["light","Light"],["dark","Dark"]])+'<label>Accent color</label><div class="sw">'+Object.keys(AC).map(function(k){return'<button aria-label="'+k+'" class="'+(s.ac===k?"on":"")+'" style="background:'+AC[k][0]+'" onclick="sset(\'ac\',\''+k+'\')"></button>'}).join("")+'</div></div>'+
+'<div class="card"><h2>Behavior</h2><label>Weekly health warnings</label>'+OO("warn")+'<label>Animations</label>'+OO("anim")+'</div>'+
+'<div class="card"><h2>Data</h2><p class="mu" style="margin:0 0 10px">Everything is stored on this device only.</p><div class="row"><button onclick="expo()">Export backup</button><button onclick="tut(0)">Replay tutorial</button></div><button style="width:100%;margin-top:8px;color:var(--bad)" onclick="rst()">Erase all data</button></div>'}
 
-function render(){var T0={weight:["Weight",vWeight],lifts:["Strength",vLifts],food:["Intake",vFood],db:["Foods",vDb],me:["Profile",vMe]}[tab];
-$("t").textContent=T0[0];$("v").innerHTML=T0[1]();if(tab==="db")lst();
+function render(){var T0={weight:["Weight",vWeight],lifts:["Strength",vLifts],food:["Intake",vFood],db:["Foods",vDb],me:["Profile",vMe],set:["Settings",vSet]}[tab];
+$("t").textContent=T0[0];$("v").className="";$("v").innerHTML=T0[1]();if(tab==="db")lst();
 $("nav").innerHTML=TABS.map(function(x){return'<button class="'+(tab===x[0]?"on":"")+'" onclick="go(\''+x[0]+'\')"><svg viewBox="0 0 24 24"><path d="'+IC[x[0]]+'"/></svg>'+x[1]+'</button>'}).join("")}
 render();
-if(!S.seen)tut(0);
+apply();if(!S.seen)tut(0);
 </script>
 </body>
 </html>
