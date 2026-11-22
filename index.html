@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f7">
+<title>Baseline - body and strength tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#f5f6f7;--sf:#fff;--tx:#1b1f24;--mu:#6b7280;--ln:#e3e6ea;--ac:#3b5b8c;--ac2:#e8eef7;--ok:#2f7d4f;--bad:#b3402f;--warn:#9a6b12;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#15181c;--sf:#1e2227;--tx:#e8eaed;--mu:#98a0ab;--ln:#2d333a;--ac:#8fb0e3;--ac2:#243044;--ok:#6cc58f;--bad:#e5836f;--warn:#dcb25c;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#15181c;--sf:#1e2227;--tx:#e8eaed;--mu:#98a0ab;--ln:#2d333a;--ac:#8fb0e3;--ac2:#243044;--ok:#6cc58f;--bad:#e5836f;--warn:#dcb25c;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 "Manrope",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-variant-numeric:tabular-nums;padding-bottom:76px}
+main{max-width:560px;margin:0 auto;padding:16px}
+h1{font-size:22px;margin:4px 0 14px;font-weight:650;letter-spacing:-.01em}
+h2{font-size:15px;margin:0 0 8px;font-weight:600}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:14px;margin-bottom:12px}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1;min-width:0}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.stat{background:var(--sf);border:1px solid var(--ln);border-radius:10px;padding:10px}
+.stat b{display:block;font-size:19px;font-weight:650}.stat span,.mu{color:var(--mu);font-size:12.5px}
+label{display:block;font-size:12.5px;color:var(--mu);margin:0 0 3px}
+input,select{width:100%;font:inherit;color:var(--tx);background:var(--bg);border:1px solid var(--ln);border-radius:8px;padding:9px 10px;min-height:40px}
+input:focus-visible,select:focus-visible,button:focus-visible{outline:2px solid var(--ac);outline-offset:1px}
+.f{margin-bottom:8px}
+button{font:inherit;cursor:pointer;border-radius:8px;border:1px solid var(--ln);background:var(--sf);color:var(--tx);padding:9px 12px;min-height:40px}
+button.p{background:var(--ac);border-color:var(--ac);color:#fff}
+:root[data-theme="dark"] button.p{color:#10151c}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) button.p{color:#10151c}}
+button.x{border:0;background:none;color:var(--mu);padding:4px 8px;min-height:32px}
+.seg{display:flex;background:var(--ac2);border-radius:8px;padding:3px;margin-bottom:10px}
+.seg button{flex:1;border:0;background:none;min-height:34px;color:var(--mu)}
+.seg button.on{background:var(--sf);color:var(--tx);font-weight:600;box-shadow:0 0 0 1px var(--ln)}
+.li{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--ln)}
+.li:first-of-type{border-top:0}
+.li div:first-child{min-width:0}
+.badge{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--ac2)}
+.up{color:var(--ok)}.dn{color:var(--bad)}.fl{color:var(--warn)}
+.bar{height:8px;background:var(--ac2);border-radius:99px;overflow:hidden;margin:6px 0 10px}
+.bar i{display:block;height:100%;background:var(--ac)}.bar i.over{background:var(--warn)}
+.empty{color:var(--mu);margin:6px 0}
+svg.ch{width:100%;height:auto;display:block}
+.ch text{fill:var(--mu);font-size:10px}.ch .g{stroke:var(--ln)}
+nav{position:fixed;left:0;right:0;bottom:0;background:var(--sf);border-top:1px solid var(--ln);display:flex;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;border-radius:0;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;color:var(--mu);padding:8px 2px;min-height:54px}
+nav button.on{color:var(--ac)}
+nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.big{font-size:26px;font-weight:650}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.hd{display:flex;align-items:center;gap:10px;margin:4px 0 14px}.hd h1{margin:0;font-weight:800}
+.logo,.ti{fill:none;stroke-linecap:round;stroke-linejoin:round}.logo{width:30px;height:30px;stroke:var(--tx);stroke-width:2}.ti{width:46px;height:46px;stroke:var(--ac);stroke-width:1.6}
+.stat b,.big{font-weight:800}
+.ov{position:fixed;inset:0;background:rgba(10,14,20,.55);display:flex;align-items:flex-end;justify-content:center;padding:16px;z-index:50}
+.tc{background:var(--sf);border:1px solid var(--ln);border-radius:14px;max-width:420px;width:100%;padding:20px;margin-bottom:calc(env(safe-area-inset-bottom,0px) + 8px)}
+.tc h2{font-size:19px;margin:10px 0 6px;font-weight:800}.tc p{margin:0;color:var(--mu)}
+.dots{display:flex;gap:6px;margin:14px 0}.dots i{width:7px;height:7px;border-radius:99px;background:var(--ln)}.dots i.on{background:var(--ac);width:18px}
+</style>
+</head>
+<body>
+<main><div class="hd"><svg class="logo" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-8-5-8-10.8A4.6 4.6 0 0112 7a4.6 4.6 0 018 2.7c0 5.8-8 10.8-8 10.8z M4 12h4l2-3.5 3 6.5 2-3h5"/></svg><h1 id="t"></h1></div><div id="v"></div></main>
+<nav id="nav"></nav>
+<script>
+var SEED=[["Chicken breast, cooked",165,31,0,3.6],["Egg, whole",143,12.6,.7,9.5],["White rice, cooked",130,2.7,28,.3],["Oats, dry",389,16.9,66,6.9],["Whole milk",61,3.2,4.8,3.3],["Greek yogurt, nonfat",59,10,3.6,.4],["Banana",89,1.1,23,.3],["Apple",52,.3,14,.2],["Salmon, cooked",206,22,0,12],["Ground beef 90%, cooked",250,26,0,15],["Tuna, canned",116,26,0,1],["Broccoli",34,2.8,7,.4],["Sweet potato, baked",90,2,21,.2],["Potato, boiled",87,1.9,20,.1],["Pasta, cooked",158,5.8,31,.9],["White bread",265,9,49,3.2],["Olive oil",884,0,0,100],["Peanut butter",588,25,20,50],["Almonds",579,21,22,50],["Cheddar cheese",403,25,1.3,33],["Whey protein powder",400,80,8,6],["Tofu, firm",144,17,3,9],["Lentils, cooked",116,9,20,.4],["Black beans, cooked",132,8.9,24,.5],["Avocado",160,2,9,15],["Cottage cheese",98,11,3.4,4.3]];
+var K="baseline1",S=null;
+try{S=JSON.parse(localStorage.getItem(K))}catch(e){}
+if(!S||!S.p){S={p:{sex:"m",age:25,h:175,act:1.55,goal:"maintain",rate:.5,ppk:1.8},w:[],l:[],foods:SEED.map(function(x,i){return{id:"s"+i,n:x[0],k:x[1],p:x[2],c:x[3],f:x[4]}}),log:[]}}
+function save(){try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}}
+var tab="weight",wr="day",nd=null,editF=null,fq="";
+function $(i){return document.getElementById(i)}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function ymd(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function td(){return ymd(new Date())}
+function pd(s){return new Date(s+"T00:00:00")}
+function addD(s,n){var d=pd(s);d.setDate(d.getDate()+n);return ymd(d)}
+function lab(s){return pd(s).toLocaleDateString(undefined,{month:"short",day:"numeric"})}
+function r1(n){return (Math.round(n*10)/10).toString()}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function avg(a){return a.reduce(function(x,y){return x+y},0)/a.length}
+function num(id){return parseFloat($(id).value)}
+var IC={weight:"M4 5h16v14H4z M8 10a4 4 0 018 0",lifts:"M3 9v6M7 6v12M17 6v12M21 9v6M7 12h10",food:"M3 11h18a9 9 0 01-18 0z M9 7c0-2 2-2 2-4M14 7c0-2 2-2 2-4",db:"M5 6h14M5 12h14M5 18h14",me:"M12 12a4 4 0 100-8 4 4 0 000 8z M4 21a8 8 0 0116 0"};
+var TABS=[["weight","Weight"],["lifts","Strength"],["food","Intake"],["db","Foods"],["me","Profile"]];
+function go(t){tab=t;render();window.scrollTo(0,0)}
+
+/* targets */
+function latestW(){if(!S.w.length)return null;return S.w.slice().sort(function(a,b){return a.d<b.d?-1:1}).pop().kg}
+function T(){var w=latestW();if(!w)return null;var p=S.p;
+var bmr=10*w+6.25*p.h-5*p.age+(p.sex==="m"?5:-161),tdee=bmr*p.act,dir=p.goal==="lose"?-1:p.goal==="gain"?1:0;
+return{w:w,bmr:bmr,tdee:tdee,target:tdee+dir*p.rate*1100,prot:p.ppk*w}}
+
+/* chart */
+function chart(raw,tr,labs,unit){
+if(raw.length<2)return '<p class="empty">Log at least two entries to see a chart.</p>';
+var W=320,H=170,l=34,r=8,t=10,b=22,n=raw.length,all=raw.concat(tr||[]),mn=Math.min.apply(0,all),mx=Math.max.apply(0,all);
+if(mx-mn<1){mx+=.5;mn-=.5}var pad=(mx-mn)*.1;mx+=pad;mn-=pad;
+function X(i){return l+i*(W-l-r)/(n-1)}function Y(v){return t+(mx-v)*(H-t-b)/(mx-mn)}
+function path(a){return a.map(function(v,i){return(i?"L":"M")+X(i).toFixed(1)+" "+Y(v).toFixed(1)}).join("")}
+var s='<svg class="ch" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Trend chart">';
+for(var g=0;g<3;g++){var v=mn+(mx-mn)*g/2,y=Y(v);s+='<line class="g" x1="'+l+'" x2="'+(W-r)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(l-4)+'" y="'+(y+3)+'" text-anchor="end">'+r1(v)+'</text>'}
+s+='<path d="'+path(raw)+'" fill="none" stroke="var(--mu)" stroke-width="1.2" opacity=".7"/>';
+if(n<=40)raw.forEach(function(v,i){s+='<circle cx="'+X(i)+'" cy="'+Y(v)+'" r="2.4" fill="var(--mu)"/>'});
+if(tr)s+='<path d="'+path(tr)+'" fill="none" stroke="var(--ac)" stroke-width="2.4" stroke-linejoin="round"/>';
+s+='<text x="'+l+'" y="'+(H-6)+'">'+labs[0]+'</text><text x="'+(W-r)+'" y="'+(H-6)+'" text-anchor="end">'+labs[n-1]+'</text></svg>';
+return s}
+
+/* weight */
+function wSeries(){
+var a=S.w.slice().sort(function(x,y){return x.d<y.d?-1:1}),raw,tr,lb;
+if(wr==="day"){a=a.slice(-30);raw=a.map(function(x){return x.kg});
+tr=raw.map(function(_,i){return avg(raw.slice(Math.max(0,i-6),i+1))});lb=a.map(function(x){return lab(x.d)})}
+else{var m={},o=[];a.forEach(function(x){var k;if(wr==="week"){var d=pd(x.d);d.setDate(d.getDate()-(d.getDay()+6)%7);k=ymd(d)}else k=x.d.slice(0,7);if(!m[k]){m[k]=[];o.push(k)}m[k].push(x.kg)});
+o=o.slice(-12);raw=o.map(function(k){return avg(m[k])});tr=null;
+lb=o.map(function(k){return wr==="week"?lab(k):pd(k+"-01").toLocaleDateString(undefined,{month:"short",year:"2-digit"})})}
+return{raw:raw,tr:tr,lb:lb}}
+function vWeight(){
+var s=wSeries(),all=S.w.slice().sort(function(x,y){return x.d<y.d?-1:1}),cur=all.length?all[all.length-1].kg:null;
+var last7=all.filter(function(x){return x.d>addD(td(),-7)}).map(function(x){return x.kg}),prev7=all.filter(function(x){return x.d<=addD(td(),-7)&&x.d>addD(td(),-14)}).map(function(x){return x.kg});
+var wk=last7.length&&prev7.length?avg(last7)-avg(prev7):null,rc=s.raw.length>1?s.raw[s.raw.length-1]-s.raw[0]:null;
+function sg(v){return(v>0?"+":"")+r1(v)}
+var h='<div class="stats"><div class="stat"><span>Current</span><b>'+(cur?r1(cur)+" kg":"--")+'</b></div><div class="stat"><span>7-day average</span><b>'+(last7.length?r1(avg(last7)):"--")+'</b></div><div class="stat"><span>Vs prior week</span><b>'+(wk===null?"--":sg(wk)+" kg")+'</b></div></div>';
+h+='<div class="card"><div class="seg">'+["day","week","month"].map(function(k){return'<button class="'+(wr===k?"on":"")+'" onclick="wr=\''+k+'\';render()">'+k[0].toUpperCase()+k.slice(1)+'</button>'}).join("")+'</div>'+chart(s.raw,s.tr,s.lb)+
+'<p class="mu" style="margin:6px 0 0">'+(wr==="day"?"Dots are daily weigh-ins; the line is the 7-entry moving average.":"Each point is the "+wr+"ly average.")+(rc===null?"":" Change across range: "+sg(rc)+" kg.")+'</p></div>';
+h+=wStats(all);h+='<div class="card"><h2>Log weight</h2><div class="row"><div class="f"><label for="wd">Date</label><input id="wd" type="date" value="'+td()+'"></div><div class="f"><label for="wk">Weight (kg)</label><input id="wk" type="number" inputmode="decimal" step="any"></div></div><button class="p" style="width:100%" onclick="addW()">Save weight</button></div>';
+h+='<div class="card"><h2>Recent entries</h2>'+(all.length?all.slice(-6).reverse().map(function(x){return'<div class="li"><div>'+lab(x.d)+'</div><div><b>'+r1(x.kg)+' kg</b><button class="x" aria-label="Delete entry" onclick="delW(\''+x.d+'\')">Remove</button></div></div>'}).join(""):'<p class="empty">No weigh-ins yet. Log your first one above.</p>')+'</div>';
+return h}
+function addW(){var d=$("wd").value,k=num("wk");if(!d||!(k>20&&k<400)){alert("Enter a date and a weight between 20 and 400 kg.");return}
+S.w=S.w.filter(function(x){return x.d!==d});S.w.push({d:d,kg:k});save();render()}
+function delW(d){S.w=S.w.filter(function(x){return x.d!==d});save();render()}
+
+/* strength */
+function e1(kg,r){return r<=1?kg:kg*(1+r/30)}
+function sessions(ex){var m={};S.l.filter(function(x){return x.ex===ex}).forEach(function(x){var e=e1(x.kg,x.reps);if(!m[x.d]||e>m[x.d])m[x.d]=e});
+return Object.keys(m).sort().map(function(d){return{d:d,e:m[d]}})}
+function status(ss){if(ss.length<2)return{t:"Need more sessions",c:"mu",pct:null};
+var n=ss.length,k=Math.min(3,Math.ceil(n/2)),rec=avg(ss.slice(n-k).map(function(x){return x.e})),pr=ss.slice(Math.max(0,n-2*k),n-k),pv=avg(pr.map(function(x){return x.e})),p=(rec-pv)/pv*100;
+if(p>=1.5)return{t:"Getting stronger",c:"up",pct:p};if(p<=-1.5)return{t:"Losing strength",c:"dn",pct:p};return{t:"Holding steady",c:"fl",pct:p}}
+function vLifts(){
+var exs=[];S.l.forEach(function(x){if(exs.indexOf(x.ex)<0)exs.push(x.ex)});
+var h='<div class="card"><h2>Log a set</h2><div class="f"><label for="le">Exercise</label><input id="le" list="exl" placeholder="e.g. Bench press"><datalist id="exl">'+exs.map(function(e){return'<option value="'+esc(e)+'">'}).join("")+'</datalist></div><div class="row"><div class="f"><label for="lk">Weight (kg)</label><input id="lk" type="number" inputmode="decimal" step="any"></div><div class="f"><label for="lr">Reps</label><input id="lr" type="number" inputmode="numeric"></div></div><div class="f"><label for="ld">Date</label><input id="ld" type="date" value="'+td()+'"></div><button class="p" style="width:100%" onclick="addL()">Save set</button></div>';
+if(!exs.length)return h+'<p class="empty">Log sets for each lift. Progress is judged on estimated one-rep max across sessions.</p>';
+var ups=0,dns=0,wt=wDelta14();
+exs.forEach(function(ex){var ss=sessions(ex),st=status(ss);if(st.c==="up")ups++;if(st.c==="dn")dns++;
+h+='<div class="card"><div class="li" style="border:0;padding-top:0"><div><h2 style="margin:0">'+esc(ex)+'</h2><span class="mu">Est. 1RM '+r1(ss[ss.length-1].e)+' kg, '+ss.length+' session'+(ss.length>1?"s":"")+'</span></div><div><span class="badge '+st.c+'">'+st.t+(st.pct!==null?" "+(st.pct>0?"+":"")+r1(st.pct)+"%":"")+'</span></div></div>'+chart(ss.map(function(x){return x.e}),null,ss.map(function(x){return lab(x.d)}))+lstat(ex,ss)+'</div>'});
+var sum=dns&&wt!==null&&wt<-.5?"Strength is falling while bodyweight drops. Check protein, calories and recovery to protect muscle.":dns?"Some lifts are trending down. Check sleep, volume and recovery.":ups?"Overall strength is trending up.":"Strength is holding. Add reps or load to progress.";
+return h.replace('<div class="card"><h2>Log a set</h2>','<div class="card"><h2>Overall</h2><p style="margin:0">'+sum+'</p></div><div class="card"><h2>Log a set</h2>')}
+function wDelta14(){var a=S.w.filter(function(x){return x.d>addD(td(),-14)}).sort(function(x,y){return x.d<y.d?-1:1});return a.length>1?a[a.length-1].kg-a[0].kg:null}
+function addL(){var ex=$("le").value.trim(),k=num("lk"),r=num("lr"),d=$("ld").value;if(!ex||!(k>=0)||!(r>0)||!d){alert("Enter exercise, weight, reps and date.");return}
+S.l.push({d:d,ex:ex,kg:k,reps:r});save();render()}
+
+/* extras */
+IC.logo="M12 20.5s-8-5-8-10.8A4.6 4.6 0 0112 7a4.6 4.6 0 018 2.7c0 5.8-8 10.8-8 10.8z M4 12h4l2-3.5 3 6.5 2-3h5";
+var TU=[["Welcome to Baseline","Track bodyweight, strength and nutrition in one place. This tour takes under a minute.","logo"],["Set up your profile","Enter age, height, activity and goal in Profile. Baseline then calculates your maintenance calories and daily protein target.","me"],["Log your weight","Weigh in at the same time each day. The moving average smooths daily swings so you can see the real trend. Switch between day, week and month views.","weight"],["Record your lifts","Log each set. Baseline estimates your one-rep max and shows whether you are getting stronger, holding steady or losing strength.","lifts"],["Track your intake","Pick foods and enter grams. See calories against your target, your deficit or surplus, protein progress and a 7-day chart.","food"],["Make it yours","Add or edit foods in the Foods tab. All data stays on your device. You can replay this tour from Profile.","db"]];
+function tut(i){var o=$("tu");if(i>=TU.length){if(o)o.remove();S.seen=1;save();go(S.w.length?tab:"me");return}
+if(!o){o=document.createElement("div");o.id="tu";o.className="ov";document.body.appendChild(o)}
+if(i>0){tab=TU[i][2];render()}
+var last=i===TU.length-1;o.innerHTML='<div class="tc" role="dialog" aria-modal="true" aria-label="Tutorial"><svg class="ti" viewBox="0 0 24 24"><path d="'+IC[TU[i][2]]+'"/></svg><h2>'+TU[i][0]+'</h2><p>'+TU[i][1]+'</p><div class="dots">'+TU.map(function(_,j){return'<i class="'+(j===i?"on":"")+'"></i>'}).join("")+'</div><div class="row"><button onclick="tut(TU.length)">'+(last?"Close":"Skip")+'</button><button class="p" onclick="tut('+(i+1)+')">'+(last?"Get started":"Next")+'</button></div></div>'}
+function dayTot(d){var o={k:0,p:0,c:0,f:0};S.log.forEach(function(x){if(x.d!==d)return;var f=foodOf(x.fid);if(!f)return;var m=x.g/100;o.k+=f.k*m;o.p+=f.p*m;o.c+=f.c*m;o.f+=f.f*m});return o}
+function bars(v,lb,tg){var W=320,H=150,l=34,r=8,t=10,b=22,n=v.length,mx=Math.max.apply(0,v.concat([tg||0,1]))*1.15,bw=(W-l-r)/n;function Y(a){return t+(mx-a)*(H-t-b)/mx}
+var s='<svg class="ch" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Daily calories, last 7 days">';
+[0,.5,1].forEach(function(g){var a=mx/1.15*g,y=Y(a);s+='<line class="g" x1="'+l+'" x2="'+(W-r)+'" y1="'+y+'" y2="'+y+'"/><text x="'+(l-4)+'" y="'+(y+3)+'" text-anchor="end">'+Math.round(a)+'</text>'});
+v.forEach(function(a,i){var x=l+i*bw+bw*.2;s+='<rect x="'+x+'" y="'+Y(a)+'" width="'+bw*.6+'" height="'+(H-b-Y(a))+'" rx="3" fill="var(--ac)" opacity="'+(i===n-1?1:.55)+'"/><text x="'+(x+bw*.3)+'" y="'+(H-6)+'" text-anchor="middle">'+lb[i]+'</text>'});
+if(tg)s+='<line x1="'+l+'" x2="'+(W-r)+'" y1="'+Y(tg)+'" y2="'+Y(tg)+'" stroke="var(--warn)" stroke-width="1.5" stroke-dasharray="4 3"/>';
+return s+'</svg>'}
+function week7(t,tot){var ds=[],k=[],lb=[],i;for(i=6;i>=0;i--){var d=addD(nd,-i);ds.push(d);k.push(dayTot(d).k);lb.push(pd(d).toLocaleDateString(undefined,{weekday:"narrow"}))}
+var ak=k.filter(function(x){return x>0}),av=ak.length?avg(ak):0,pp=ds.map(function(d){return dayTot(d).p}).filter(function(x){return x>0}),ap=pp.length?avg(pp):0,hit=t?pp.filter(function(x){return x>=t.prot*.9}).length:0;
+var mk=tot.p*4+tot.c*4+tot.f*9,pc=mk?Math.round(tot.p*4/mk*100):0,cc=mk?Math.round(tot.c*4/mk*100):0,fc=mk?100-pc-cc:0;
+return'<div class="card"><h2>Last 7 days</h2>'+bars(k,lb,t&&t.target)+'<p class="mu" style="margin:4px 0 0">Dashed line is your calorie target.</p><div class="grid3" style="margin-top:10px"><div><b>'+Math.round(av)+'</b><br><span class="mu">Avg kcal</span></div><div><b>'+Math.round(ap)+' g</b><br><span class="mu">Avg protein</span></div><div><b>'+hit+'/'+pp.length+'</b><br><span class="mu">Protein goal met</span></div></div>'+
+(mk?'<h2 style="margin:16px 0 6px">Macro split for this day</h2><div style="display:flex;height:10px;border-radius:99px;overflow:hidden"><i style="width:'+pc+'%;background:var(--ac)"></i><i style="width:'+cc+'%;background:var(--ok)"></i><i style="width:'+fc+'%;background:var(--warn)"></i></div><p class="mu" style="margin:6px 0 0">Protein '+pc+'%, carbs '+cc+'%, fat '+fc+'%</p>':'')+'</div>'}
+function wStats(a){if(a.length<2)return"";var v=a.map(function(x){return x.kg}),f=a[0],z=a[a.length-1],days=Math.max(1,(pd(z.d)-pd(f.d))/864e5),pw=(z.kg-f.kg)/days*7,m=a.filter(function(x){return x.d>addD(td(),-30)}),c30=m.length>1?m[m.length-1].kg-m[0].kg:null,bmi=z.kg/Math.pow(S.p.h/100,2);
+function sg(x){return(x>0?"+":"")+r1(x)}function c(p,q){return'<div class="stat"><span>'+p+'</span><b>'+q+'</b></div>'}
+return'<div class="stats" style="grid-template-columns:repeat(2,1fr)">'+c("Lowest",r1(Math.min.apply(0,v))+" kg")+c("Highest",r1(Math.max.apply(0,v))+" kg")+c("Avg weekly change",sg(pw)+" kg")+c("Last 30 days",c30===null?"--":sg(c30)+" kg")+c("Total change",sg(z.kg-f.kg)+" kg")+c("BMI",r1(bmi))+'</div>'}
+function lstat(ex,ss){var L=S.l.filter(function(x){return x.ex===ex}),hv=L.reduce(function(m,x){return x.kg>m.kg?x:m},L[0]),pr=Math.max.apply(0,ss.map(function(x){return x.e})),vol=L.filter(function(x){return x.d>addD(td(),-7)}).reduce(function(s,x){return s+x.kg*x.reps},0);
+function c(p,q){return'<div><b>'+q+'</b><br><span class="mu">'+p+'</span></div>'}
+return'<div class="grid3" style="margin-top:10px">'+c("Best est. 1RM",r1(pr)+" kg")+c("Heaviest set",hv.kg+" x "+hv.reps)+c("7-day volume",Math.round(vol)+" kg")+'</div>'}
+
+/* intake */
+function foodOf(id){return S.foods.filter(function(f){return f.id===id})[0]}
+function vFood(){nd=nd||td();var t=T(),items=S.log.filter(function(x){return x.d===nd}),tot={k:0,p:0,c:0,f:0};
+items.forEach(function(x){var f=foodOf(x.fid);if(!f)return;var m=x.g/100;tot.k+=f.k*m;tot.p+=f.p*m;tot.c+=f.c*m;tot.f+=f.f*m});
+var h='<div class="row" style="margin-bottom:12px"><button onclick="nd=addD(nd,-1);render()">Previous</button><div style="text-align:center;font-weight:600">'+(nd===td()?"Today":lab(nd))+'</div><button onclick="nd=addD(nd,1);render()">Next</button></div>';
+if(!t)h+='<div class="card"><p style="margin:0">Log your bodyweight first so targets can be calculated.</p></div>';
+else{var bal=tot.k-t.tdee,bt=Math.abs(bal)<=100?"Around maintenance":bal<0?"Deficit of "+Math.round(-bal)+" kcal":"Surplus of "+Math.round(bal)+" kcal";
+h+='<div class="card"><div class="row"><div><span class="mu">Calories</span><div class="big">'+Math.round(tot.k)+'<span class="mu"> / '+Math.round(t.target)+'</span></div></div><div><span class="mu">Protein</span><div class="big">'+Math.round(tot.p)+'<span class="mu"> / '+Math.round(t.prot)+' g</span></div></div></div>'+
+'<div class="bar"><i class="'+(tot.k>t.target?"over":"")+'" style="width:'+Math.min(100,tot.k/t.target*100)+'%"></i></div><div class="bar"><i style="width:'+Math.min(100,tot.p/t.prot*100)+'%"></i></div>'+
+'<div class="grid3"><div><b>'+Math.round(tot.c)+' g</b><br><span class="mu">Carbs</span></div><div><b>'+Math.round(tot.f)+' g</b><br><span class="mu">Fat</span></div><div><b>'+Math.max(0,Math.round(t.target-tot.k))+'</b><br><span class="mu">kcal left</span></div></div>'+
+'<p style="margin:12px 0 0"><span class="badge">'+bt+'</span> <span class="mu">vs maintenance of '+Math.round(t.tdee)+' kcal</span></p></div>'}
+h+=week7(t,tot);h+='<div class="card"><h2>Add food</h2><div class="f"><label for="ff">Food</label><input id="ff" list="fl" placeholder="Search your database"><datalist id="fl">'+S.foods.slice().sort(function(a,b){return a.n<b.n?-1:1}).map(function(f){return'<option value="'+esc(f.n)+'">'}).join("")+'</datalist></div><div class="f"><label for="fg">Amount (g)</label><input id="fg" type="number" inputmode="decimal" value="100"></div><button class="p" style="width:100%" onclick="addLog()">Add to log</button></div>';
+h+='<div class="card"><h2>Logged</h2>'+(items.length?items.map(function(x){var f=foodOf(x.fid);if(!f)return"";return'<div class="li"><div>'+esc(f.n)+'<br><span class="mu">'+x.g+' g, '+Math.round(f.p*x.g/100)+' g protein</span></div><div><b>'+Math.round(f.k*x.g/100)+' kcal</b><button class="x" aria-label="Remove" onclick="delLog(\''+x.id+'\')">Remove</button></div></div>'}).join(""):'<p class="empty">Nothing logged for this day.</p>')+'</div>';
+return h}
+function addLog(){var n=$("ff").value.trim().toLowerCase(),g=num("fg"),f=S.foods.filter(function(x){return x.n.toLowerCase()===n})[0];
+if(!f||!(g>0)){alert("Pick a food from your database and enter grams. Add new foods in the Foods tab.");return}
+S.log.push({id:uid(),d:nd,fid:f.id,g:g});save();render()}
+function delLog(id){S.log=S.log.filter(function(x){return x.id!==id});save();render()}
+
+/* foods */
+function vDb(){var e=editF?foodOf(editF):null,q=fq.toLowerCase();
+var h='<div class="card"><h2>'+(e?"Edit food":"Add food")+'</h2><div class="f"><label for="dn">Name</label><input id="dn" value="'+(e?esc(e.n):"")+'"></div><p class="mu" style="margin:0 0 6px">Values per 100 g</p><div class="row"><div class="f"><label for="dk">Calories</label><input id="dk" type="number" inputmode="decimal" value="'+(e?e.k:"")+'"></div><div class="f"><label for="dp">Protein</label><input id="dp" type="number" inputmode="decimal" value="'+(e?e.p:"")+'"></div></div><div class="row"><div class="f"><label for="dc">Carbs</label><input id="dc" type="number" inputmode="decimal" value="'+(e?e.c:"")+'"></div><div class="f"><label for="df">Fat</label><input id="df" type="number" inputmode="decimal" value="'+(e?e.f:"")+'"></div></div><div class="row"><button class="p" onclick="saveF()">'+(e?"Save changes":"Add food")+'</button>'+(e?'<button onclick="editF=null;render()">Cancel</button>':"")+'</div></div>';
+h+='<div class="f"><label for="sq">Search</label><input id="sq" value="'+esc(fq)+'" oninput="fq=this.value;lst()"></div><div class="card" id="fl2"></div>';return h}
+function lst(){var q=fq.toLowerCase(),a=S.foods.filter(function(f){return f.n.toLowerCase().indexOf(q)>=0}).sort(function(a,b){return a.n<b.n?-1:1});
+$("fl2").innerHTML=a.length?a.map(function(f){return'<div class="li"><div>'+esc(f.n)+'<br><span class="mu">'+r1(f.k)+' kcal, P '+r1(f.p)+', C '+r1(f.c)+', F '+r1(f.f)+' per 100 g</span></div><div><button class="x" onclick="editF=\''+f.id+'\';render();window.scrollTo(0,0)">Edit</button><button class="x" onclick="delF(\''+f.id+'\')">Delete</button></div></div>'}).join(""):'<p class="empty">No matches. Add it above.</p>'}
+function saveF(){var n=$("dn").value.trim(),k=num("dk"),p=num("dp")||0,c=num("dc")||0,f=num("df")||0;if(!n||!(k>=0)){alert("Enter a name and calories per 100 g.");return}
+if(editF){var e=foodOf(editF);e.n=n;e.k=k;e.p=p;e.c=c;e.f=f;editF=null}else S.foods.push({id:uid(),n:n,k:k,p:p,c:c,f:f});save();render()}
+function delF(id){if(!confirm("Delete this food? Logged entries using it will be hidden."))return;S.foods=S.foods.filter(function(f){return f.id!==id});save();render()}
+
+/* profile */
+function sp(k,v){S.p[k]=isNaN(parseFloat(v))?v:parseFloat(v);save();render()}
+function opt(v,cur,l){return'<option value="'+v+'"'+(String(cur)===String(v)?" selected":"")+'>'+l+'</option>'}
+function vMe(){var p=S.p,t=T();
+var h='<div class="card"><div class="row"><div class="f"><label for="ps">Sex</label><select id="ps" onchange="sp(\'sex\',this.value)">'+opt("m",p.sex,"Male")+opt("f",p.sex,"Female")+'</select></div><div class="f"><label for="pa">Age</label><input id="pa" type="number" value="'+p.age+'" onchange="sp(\'age\',this.value)"></div><div class="f"><label for="ph">Height (cm)</label><input id="ph" type="number" value="'+p.h+'" onchange="sp(\'h\',this.value)"></div></div>'+
+'<div class="f"><label for="pc">Activity level</label><select id="pc" onchange="sp(\'act\',this.value)">'+opt(1.2,p.act,"Sedentary")+opt(1.375,p.act,"Light, 1 to 3 workouts a week")+opt(1.55,p.act,"Moderate, 3 to 5 workouts a week")+opt(1.725,p.act,"Heavy, 6 to 7 workouts a week")+opt(1.9,p.act,"Very heavy, physical job plus training")+'</select></div>'+
+'<div class="row"><div class="f"><label for="pg">Goal</label><select id="pg" onchange="sp(\'goal\',this.value)">'+opt("lose",p.goal,"Lose weight")+opt("maintain",p.goal,"Maintain")+opt("gain",p.goal,"Gain weight")+'</select></div><div class="f"><label for="pr">Rate (kg per week)</label><select id="pr" onchange="sp(\'rate\',this.value)">'+opt(.25,p.rate,"0.25")+opt(.5,p.rate,"0.5")+opt(.75,p.rate,"0.75")+opt(1,p.rate,"1.0")+'</select></div></div>'+
+'<div class="f"><label for="pp">Protein (g per kg bodyweight)</label><input id="pp" type="number" step="0.1" value="'+p.ppk+'" onchange="sp(\'ppk\',this.value)"></div></div>';
+h+=t?'<div class="card"><h2>Your numbers</h2><div class="li"><span>Weight used</span><b>'+r1(t.w)+' kg</b></div><div class="li"><span>Resting energy (BMR)</span><b>'+Math.round(t.bmr)+' kcal</b></div><div class="li"><span>Maintenance (TDEE)</span><b>'+Math.round(t.tdee)+' kcal</b></div><div class="li"><span>Daily calorie target</span><b>'+Math.round(t.target)+' kcal</b></div><div class="li"><span>Daily protein target</span><b>'+Math.round(t.prot)+' g</b></div><p class="mu" style="margin:8px 0 0">Mifflin-St Jeor estimate. Targets use your latest logged weight and 7,700 kcal per kg of change. Adjust based on real trend.</p></div>':'<div class="card"><p style="margin:0">Log a weight to see your calorie and protein targets.</p></div>';
+h+='<div class="card"><h2>Appearance</h2><div class="seg"><button onclick="theme(\'auto\')">Auto</button><button onclick="theme(\'light\')">Light</button><button onclick="theme(\'dark\')">Dark</button></div><p class="mu" style="margin:0">Data is stored on this device only.</p><button style="width:100%;margin-top:10px" onclick="tut(0)">Replay tutorial</button></div>';return h}
+function theme(m){var r=document.documentElement;if(m==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",m)}
+
+function render(){var T0={weight:["Weight",vWeight],lifts:["Strength",vLifts],food:["Intake",vFood],db:["Foods",vDb],me:["Profile",vMe]}[tab];
+$("t").textContent=T0[0];$("v").innerHTML=T0[1]();if(tab==="db")lst();
+$("nav").innerHTML=TABS.map(function(x){return'<button class="'+(tab===x[0]?"on":"")+'" onclick="go(\''+x[0]+'\')"><svg viewBox="0 0 24 24"><path d="'+IC[x[0]]+'"/></svg>'+x[1]+'</button>'}).join("")}
+render();
+if(!S.seen)tut(0);
+</script>
+</body>
+</html>
