@@ -188,11 +188,11 @@ function tut(i){var o=$("tu");if(i>=TU.length){if(o)o.remove();S.seen=1;save();g
 if(!o){o=document.createElement("div");o.id="tu";o.className="ov";document.body.appendChild(o)}
 if(i>0){tab=TU[i][2];render()}
 var last=i===TU.length-1;o.innerHTML='<div class="tc" role="dialog" aria-modal="true" aria-label="Tutorial"><svg class="ti" viewBox="0 0 24 24"><path d="'+IC[TU[i][2]]+'"/></svg><h2>'+TU[i][0]+'</h2><p>'+TU[i][1]+'</p><div class="dots">'+TU.map(function(_,j){return'<i class="'+(j===i?"on":"")+'"></i>'}).join("")+'</div><div class="row"><button onclick="tut(TU.length)">'+(last?"Close":"Skip")+'</button><button class="p" onclick="tut('+(i+1)+')">'+(last?"Get started":"Next")+'</button></div></div>'}
-function wkInfo(){var a=S.w.filter(function(x){return x.d>addD(td(),-14)}).sort(function(x,y){return x.d<y.d?-1:1});if(a.length<2)return null;
-var f=a[0],z=a[a.length-1],dd=(pd(z.d)-pd(f.d))/864e5;if(dd<3)return null;var ch=(z.kg-f.kg)/dd*7;return{ch:ch,pct:ch/z.kg*100}}
+function wkInfo(){var a=S.w.filter(function(x){return x.d>addD(td(),-14)}).sort(function(x,y){return x.d<y.d?-1:1});if(a.length<2)return{wait:0};
+var f=a[0],z=a[a.length-1],dd=(pd(z.d)-pd(f.d))/864e5;if(a.length<3||dd<7)return{wait:Math.floor(dd)};var ch=(z.kg-f.kg)/dd*7;return{ch:ch,pct:ch/z.kg*100}}
 function al(c,ti,m){return'<div class="alert" role="status" style="--c:var(--'+c+')"><i class="dot"></i><div><b>'+ti+'</b><span>'+m+'</span></div></div>'}
 function wkCard(){if(!S.st.warn)return"";var i=wkInfo(),g=S.p.goal,t=T(),h="",r;
-if(!i)h=al("mu","Weekly check","Log two or more weigh-ins over at least 3 days to see how your weekly trend fits your goal.");
+if(i&&i.wait!==undefined)h=al("mu","Weekly check unlocks soon","Warnings need a full week of weigh-ins (at least 3 entries) so normal daily swings don't trigger false alarms. You have "+i.wait+" of 7 days so far.");else if(!i)h=al("mu","Weekly check","Log your weight to start your weekly check.");
 else{var p=i.pct,d=(i.ch>0?"+":"")+r1(bv(i.ch))+" "+bu()+" a week ("+(p>0?"+":"")+r1(p)+"%)";
 if(p<=-1)r=al("bad","Losing weight too fast","Your trend is "+d+". Over 1% of bodyweight a week is unhealthy and can cost muscle. Eat more or ease the deficit.");
 else if(g==="lose")r=p>-.1?al("org","Not losing yet","Your trend is "+d+". Tighten intake a little or give it another week."):al("ok","On track for fat loss","Your trend is "+d+". A steady, healthy pace.");
@@ -200,7 +200,7 @@ else if(g==="gain")r=p>.5?al("org","Gaining too fast","Your trend is "+d+". Past
 else r=Math.abs(p)<=.3?al("ok","Maintaining well","Your trend is "+d+". Weight is stable."):al("org",p>0?"Weight is creeping up":"Weight is drifting down","Your trend is "+d+" and your goal is to maintain.");
 h=r}
 var ks=[];for(var j=0;j<7;j++){var k=dayTot(addD(td(),-j)).k;if(k>0)ks.push(k)}
-if(t&&ks.length>=3&&avg(ks)<t.bmr)h+=al("bad","Eating below your resting energy","Your logged average is "+Math.round(avg(ks))+" kcal over "+ks.length+" days, under your BMR of "+Math.round(t.bmr)+" kcal. Staying this low is unhealthy.");
+if(t&&ks.length>=5&&avg(ks)<t.bmr)h+=al("bad","Eating below your resting energy","Your logged average is "+Math.round(avg(ks))+" kcal over "+ks.length+" days, under your BMR of "+Math.round(t.bmr)+" kcal. Staying this low is unhealthy.");
 return h}
 function dayTot(d){var o={k:0,p:0,c:0,f:0};S.log.forEach(function(x){if(x.d!==d)return;var f=foodOf(x.fid);if(!f)return;var m=x.g/100;o.k+=f.k*m;o.p+=f.p*m;o.c+=f.c*m;o.f+=f.f*m});return o}
 function bars(v,lb,tg){var W=320,H=150,l=34,r=8,t=10,b=22,n=v.length,mx=Math.max.apply(0,v.concat([tg||0,1]))*1.15,bw=(W-l-r)/n;function Y(a){return t+(mx-a)*(H-t-b)/mx}
