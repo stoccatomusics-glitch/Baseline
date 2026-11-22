@@ -181,19 +181,20 @@ function foodOf(id){return S.foods.filter(function(f){return f.id===id})[0]}
 function vFood(){nd=nd||td();var t=T(),items=S.log.filter(function(x){return x.d===nd}),tot={k:0,p:0,c:0,f:0};
 items.forEach(function(x){var f=foodOf(x.fid);if(!f)return;var m=x.g/100;tot.k+=f.k*m;tot.p+=f.p*m;tot.c+=f.c*m;tot.f+=f.f*m});
 var h='<div class="row" style="margin-bottom:12px"><button onclick="nd=addD(nd,-1);render()">Previous</button><div style="text-align:center;font-weight:600">'+(nd===td()?"Today":lab(nd))+'</div><button onclick="nd=addD(nd,1);render()">Next</button></div>';
-if(!t)h+='<div class="card"><p style="margin:0">Log your bodyweight first so targets can be calculated.</p></div>';
+if(!t)h+='<div class="card"><div class="big">'+Math.round(tot.k)+' kcal</div><p style="margin:4px 0 0">'+Math.round(tot.p)+' g protein, '+Math.round(tot.c)+' g carbs, '+Math.round(tot.f)+' g fat today. Log your bodyweight in the Weight tab to see targets and your deficit or surplus.</p></div>';
 else{var bal=tot.k-t.tdee,bt=Math.abs(bal)<=100?"Around maintenance":bal<0?"Deficit of "+Math.round(-bal)+" kcal":"Surplus of "+Math.round(bal)+" kcal";
 h+='<div class="card"><div class="row"><div><span class="mu">Calories</span><div class="big">'+Math.round(tot.k)+'<span class="mu"> / '+Math.round(t.target)+'</span></div></div><div><span class="mu">Protein</span><div class="big">'+Math.round(tot.p)+'<span class="mu"> / '+Math.round(t.prot)+' g</span></div></div></div>'+
 '<div class="bar"><i class="'+(tot.k>t.target?"over":"")+'" style="width:'+Math.min(100,tot.k/t.target*100)+'%"></i></div><div class="bar"><i style="width:'+Math.min(100,tot.p/t.prot*100)+'%"></i></div>'+
 '<div class="grid3"><div><b>'+Math.round(tot.c)+' g</b><br><span class="mu">Carbs</span></div><div><b>'+Math.round(tot.f)+' g</b><br><span class="mu">Fat</span></div><div><b>'+Math.max(0,Math.round(t.target-tot.k))+'</b><br><span class="mu">kcal left</span></div></div>'+
 '<p style="margin:12px 0 0"><span class="badge">'+bt+'</span> <span class="mu">vs maintenance of '+Math.round(t.tdee)+' kcal</span></p></div>'}
-h+=week7(t,tot);h+='<div class="card"><h2>Add food</h2><div class="f"><label for="ff">Food</label><input id="ff" list="fl" placeholder="Search your database" oninput="pick()"><datalist id="fl">'+S.foods.slice().sort(function(a,b){return a.n<b.n?-1:1}).map(function(f){return'<option value="'+esc(f.n)+'">'}).join("")+'</datalist></div><div class="row"><div class="f"><label for="fg">Amount (g)</label><input id="fg" type="number" inputmode="decimal" value="100"></div><div class="f"><label for="fn">Servings</label><input id="fn" type="number" inputmode="decimal" step="any" value="1" oninput="srv()"></div></div><p class="mu" id="sv" style="margin:0 0 8px"></p><button class="p" style="width:100%" onclick="addLog()">Add to log</button></div>';
+h+=week7(t,tot);h+='<div class="card"><h2>Add food</h2><div class="f"><label for="ff">Food</label><select id="ff" onchange="pick()"><option value="">Choose a food</option>'+S.foods.slice().sort(function(a,b){return a.n<b.n?-1:1}).map(function(f){return'<option value="'+f.id+'">'+esc(f.n)+'</option>'}).join("")+'</select></div><div class="row"><div class="f"><label for="fg">Amount (g)</label><input id="fg" type="number" inputmode="decimal" value="100" oninput="prev()"></div><div class="f"><label for="fn">Servings</label><input id="fn" type="number" inputmode="decimal" step="any" value="1" oninput="srv()"></div></div><p class="mu" id="sv" style="margin:0 0 8px"></p><button class="p" style="width:100%" onclick="addLog()">Add to log</button></div>';
 h+='<div class="card"><h2>Logged</h2>'+(items.length?items.map(function(x){var f=foodOf(x.fid);if(!f)return"";return'<div class="li"><div>'+esc(f.n)+'<br><span class="mu">'+x.g+' g, '+Math.round(f.p*x.g/100)+' g protein</span></div><div><b>'+Math.round(f.k*x.g/100)+' kcal</b><button class="x" aria-label="Remove" onclick="delLog(\''+x.id+'\')">Remove</button></div></div>'}).join(""):'<p class="empty">Nothing logged for this day.</p>')+'</div>';
 return h}
-function curF(){var n=$("ff").value.trim().toLowerCase();return S.foods.filter(function(x){return x.n.toLowerCase()===n})[0]}
-function pick(){var f=curF();if(f){$("fn").value=1;$("fg").value=r1(f.s||100);$("sv").textContent="1 serving = "+r1(f.s||100)+" g"}}
-function srv(){var f=curF();if(f&&num("fn")>0)$("fg").value=r1((f.s||100)*num("fn"))}
-function addLog(){var n=$("ff").value.trim().toLowerCase(),g=num("fg"),f=S.foods.filter(function(x){return x.n.toLowerCase()===n})[0];
+function curF(){return foodOf($("ff").value)}
+function pick(){var f=curF();if(f){$("fn").value=1;$("fg").value=r1(f.s||100)}prev()}
+function srv(){var f=curF();if(f&&num("fn")>0)$("fg").value=r1((f.s||100)*num("fn"));prev()}
+function prev(){var f=curF(),g=num("fg");$("sv").textContent=f&&g>0?"1 serving = "+r1(f.s||100)+" g. This entry: "+Math.round(f.k*g/100)+" kcal, "+r1(f.p*g/100)+" g protein, "+r1(f.c*g/100)+" g carbs, "+r1(f.f*g/100)+" g fat.":""}
+function addLog(){var g=num("fg"),f=curF();
 if(!f||!(g>0)){alert("Pick a food from your database and enter grams. Add new foods in the Foods tab.");return}
 S.log.push({id:uid(),d:nd,fid:f.id,g:g});save();render()}
 function delLog(id){S.log=S.log.filter(function(x){return x.id!==id});save();render()}
