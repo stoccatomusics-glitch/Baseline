@@ -20,6 +20,12 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Prepare web files and icon
+        run: |
+          mkdir -p www resources
+          cp index.html www/index.html
+          cp icon.png resources/icon.png
+
       - name: Install dependencies
         run: npm install
 
